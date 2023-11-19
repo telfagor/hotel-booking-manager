@@ -1,7 +1,7 @@
-package com.hotel.entity;
+package com.bolun.hotel.entity;
 
-import com.hotel.entity.enums.Role;
-import com.hotel.entity.enums.Gender;
+import com.bolun.hotel.entity.enums.Gender;
+import com.bolun.hotel.entity.enums.Role;
 import lombok.Data;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
