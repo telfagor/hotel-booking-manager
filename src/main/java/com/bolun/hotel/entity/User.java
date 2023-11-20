@@ -2,10 +2,10 @@ package com.bolun.hotel.entity;
 
 import com.bolun.hotel.entity.enums.Gender;
 import com.bolun.hotel.entity.enums.Role;
-import lombok.Data;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
@@ -20,5 +20,5 @@ public class User {
     private String password;
     private Role role;
     private Gender gender;
-    private Long userDetailId;
+    private UserDetail userDetail;
 }
