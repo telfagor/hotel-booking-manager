@@ -20,7 +20,6 @@ public class ConnectionManager {
     private static final String POOL_SIZE = "db.pool.size";
     private static final int DEFAULT_POOL_SIZE = 10;
     private static BlockingQueue<Connection> pool;
-
     private static List<Connection> sourceConnections;
 
     static {
