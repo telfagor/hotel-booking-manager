@@ -1,4 +1,4 @@
-package com.bolun.hotel.connection_2;
+package com.bolun.hotel.connection;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
