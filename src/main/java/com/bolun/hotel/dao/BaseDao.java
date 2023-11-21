@@ -2,13 +2,13 @@ package com.bolun.hotel.dao;
 
 import java.util.Optional;
 
-public interface Dao<K, E> {
+public interface BaseDao<K, E> {
 
     E save(E entity);
 
-    void update(E entity);
+    Boolean update(E entity);
 
     Optional<E> findById(K id);
 
-    boolean delete(K id);
+    Boolean delete(K id);
 }

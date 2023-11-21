@@ -1,15 +1,27 @@
 package com.bolun.hotel.connection;
 
-import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
+import com.bolun.hotel.exception.ConnectionException;
 
 import java.sql.Connection;
 
 @UtilityClass
 public class ConnectionManager {
 
-    @SneakyThrows
+    static {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException ex) {
+            throw new ConnectionException("The PostgresSQL driver was not been loaded!", ex);
+        }
+    }
+
     public static Connection getConnection() {
-        return ConnectionPool.getPool().take();
+        try {
+            return ConnectionPool.getPool().take();
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+            throw new ConnectionException("The connection was not obtained!", ex);
+        }
     }
 }

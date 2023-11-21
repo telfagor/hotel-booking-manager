@@ -1,24 +1,25 @@
 package com.bolun.hotel.connection;
 
 import lombok.Getter;
-import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
+import com.bolun.hotel.exception.ConnectionException;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.lang.reflect.Proxy;
+import java.sql.SQLException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ArrayBlockingQueue;
 
 @UtilityClass
 public class ConnectionPool {
 
-    private static final String POOL_SIZE = "db.pool.size";
     private static final String DB_URL = "db.url";
     private static final String DB_USERNAME = "db.username";
     private static final String DB_PASSWORD = "db.password";
+    private static final String POOL_SIZE = "db.pool.size";
     private static final int DEFAULT_POOL_SIZE = 10;
 
     @Getter
@@ -48,19 +49,25 @@ public class ConnectionPool {
         }
     }
 
-    @SneakyThrows
     private static Connection open() {
-        return DriverManager.getConnection(
-                PropertiesUtil.getValue(DB_URL),
-                PropertiesUtil.getValue(DB_USERNAME),
-                PropertiesUtil.getValue(DB_PASSWORD)
-        );
+        try {
+            return DriverManager.getConnection(
+                    PropertiesUtil.getValue(DB_URL),
+                    PropertiesUtil.getValue(DB_USERNAME),
+                    PropertiesUtil.getValue(DB_PASSWORD));
+        } catch (SQLException ex) {
+            throw new ConnectionException("The connection cannot be opened!", ex);
+        }
     }
 
-    @SneakyThrows
+
     public static void closePool() {
-        for (Connection sourceConnection : sourceConnections) {
-            sourceConnection.close();
+        try {
+            for (Connection sourceConnection : sourceConnections) {
+                sourceConnection.close();
+            }
+        } catch (SQLException ex) {
+            throw new ConnectionException("The connection pool cannot be closed!", ex);
         }
     }
 }

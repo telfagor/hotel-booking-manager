@@ -1,50 +1,48 @@
 package com.bolun.hotel.dao;
 
-import com.bolun.hotel.connection.ConnectionManager;
-import com.bolun.hotel.entity.enums.Role;
 import lombok.NoArgsConstructor;
-import lombok.SneakyThrows;
+import com.bolun.hotel.entity.enums.Role;
+import com.bolun.hotel.exception.DaoException;
+import com.bolun.hotel.connection.ConnectionManager;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.PreparedStatement;
-import java.util.Optional;
+import java.sql.SQLException;
 
 import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
 public class RoleDao {
 
+    private static final String USER_ROLE = "user_role";
+    private static final String ERROR_MESSAGE = "Error occurred in the findAll method!";
     private static final RoleDao INSTANCE = new RoleDao();
 
-    private static final String INSERT_SQL = """
-            INSERT INTO "role" (user_role)
-            VALUES (?)
+    private static final String FIND_ALL = """
+            SELECT user_role
+            FROM "role";
             """;
 
-    @SneakyThrows
-    public Role save(Role role) {
+    public List<Role> findAll() {
         try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_SQL)) {
-             preparedStatement.setString(1, role.name());
-             preparedStatement.executeUpdate();
-             return role;
+             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            List<Role> roles = new ArrayList<>();
+            while (resultSet.next()) {
+                roles.add(Role.valueOf(resultSet.getString(USER_ROLE)));
+            }
+
+            return roles;
+        } catch (SQLException ex) {
+            throw new DaoException(ERROR_MESSAGE, ex);
         }
-    }
-
-    public void update(Role entity) {
-
-    }
-
-    public Optional<Role> findByRole(Role role) {
-        return Optional.empty();
-    }
-
-    public boolean deleteByRole(Role role) {
-        return false;
     }
 
     public static RoleDao getInstance() {
         return INSTANCE;
-
     }
 }
