@@ -1,11 +1,11 @@
 package com.bolun.hotel.entity;
 
-import com.bolun.hotel.entity.enums.Gender;
-import com.bolun.hotel.entity.enums.Role;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import com.bolun.hotel.entity.enums.Role;
+import com.bolun.hotel.entity.enums.Gender;
 
 @Data
 @NoArgsConstructor
