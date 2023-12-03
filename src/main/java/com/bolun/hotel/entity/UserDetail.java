@@ -17,4 +17,5 @@ public class UserDetail {
     private String contactNumber;
     private String photo;
     private LocalDate birthdate;
+    private Integer money;
 }

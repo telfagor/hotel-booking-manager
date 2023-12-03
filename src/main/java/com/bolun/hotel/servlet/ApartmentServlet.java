@@ -1,7 +1,6 @@
 package com.bolun.hotel.servlet;
 
 import com.bolun.hotel.helper.JspHelper;
-import com.bolun.hotel.helper.UrlPath;
 import com.bolun.hotel.service.ApartmentService;
 import com.bolun.hotel.service.impl.ApartmentServiceImpl;
 import jakarta.servlet.ServletException;

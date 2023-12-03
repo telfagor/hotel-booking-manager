@@ -16,8 +16,8 @@ public class UserDetailDaoImpl implements UserDetailDao {
     private static final UserDetailDao INSTANCE = new UserDetailDaoImpl();
 
     private static final String INSERT_SQL = """
-            INSERT INTO user_detail (contact_number, photo, birthdate)
-            VALUES (?, ?, ?)
+            INSERT INTO user_detail (id, contact_number, photo, birthdate, user_money)
+            VALUES (?, ?, ?, ?, ?)
             """;
 
     private static final String UPDATE_SQL = """
@@ -33,7 +33,8 @@ public class UserDetailDaoImpl implements UserDetailDao {
             SELECT id,
                    contact_number,
                    photo,
-                   birthdate
+                   birthdate,
+                   user_money
             FROM user_detail
             WHERE id = ?
             """;
@@ -47,9 +48,11 @@ public class UserDetailDaoImpl implements UserDetailDao {
     public UserDetail save(UserDetail userDetail) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_SQL, Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setString(1, userDetail.getContactNumber());
-            preparedStatement.setString(2, userDetail.getPhoto());
-            preparedStatement.setDate(3, Date.valueOf(userDetail.getBirthdate()));
+            preparedStatement.setLong(1, userDetail.getId());
+            preparedStatement.setString(2, userDetail.getContactNumber());
+            preparedStatement.setObject(3, userDetail.getPhoto());
+            preparedStatement.setDate(4, Date.valueOf(userDetail.getBirthdate()));
+            preparedStatement.setInt(5, userDetail.getMoney());
             preparedStatement.executeUpdate();
 
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -58,7 +61,7 @@ public class UserDetailDaoImpl implements UserDetailDao {
 
             return userDetail;
         } catch (SQLException ex) {
-            throw new DaoException("An error occur when trying save user detail info!", ex);
+            throw new DaoException(ex.getMessage(), ex);
         }
     }
 
@@ -82,18 +85,23 @@ public class UserDetailDaoImpl implements UserDetailDao {
             UserDetail userDetail = null;
 
             while (resultSet.next()) {
-                userDetail = UserDetail.builder()
-                        .id(resultSet.getObject("id", Long.class))
-                        .contactNumber(resultSet.getObject("contact_number", String.class))
-                        .photo(resultSet.getObject("photo", String.class))
-                        .birthdate(resultSet.getObject("birthdate", Date.class).toLocalDate())
-                        .build();
+                userDetail = buildUserDetail(resultSet);
             }
 
             return Optional.ofNullable(userDetail);
         } catch (SQLException ex) {
             throw new DaoException(ex.getMessage(), ex);
         }
+    }
+
+    private UserDetail buildUserDetail(ResultSet resultSet) throws SQLException {
+        return UserDetail.builder()
+                .id(resultSet.getObject("id", Long.class))
+                .contactNumber(resultSet.getObject("contact_number", String.class))
+                .photo(resultSet.getObject("photo", String.class))
+                .birthdate(resultSet.getObject("birthdate", Date.class).toLocalDate())
+                .money(resultSet.getObject("user_money", Integer.class))
+                .build();
     }
 
     @Override

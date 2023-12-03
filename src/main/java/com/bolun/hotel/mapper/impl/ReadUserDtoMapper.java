@@ -14,18 +14,19 @@ public class ReadUserDtoMapper implements Mapper<User, ReadUserDto> {
 
     @Override
     public ReadUserDto mapFrom(User object) {
-        return new ReadUserDto(
-                object.getId(),
-                object.getFirstName(),
-                object.getLastName(),
-                object.getEmail(),
-                //object.getUserDetail().getPhoto(),
-                object.getRole(),
-                object.getGender()
-        );
+        return ReadUserDto.builder()
+                .id(object.getId())
+                .firstName(object.getFirstName())
+                .lastName(object.getLastName())
+                .email(object.getEmail())
+                .userDetail(object.getUserDetail())
+                .role(object.getRole())
+                .gender(object.getGender())
+                .build();
     }
 
     public static ReadUserDtoMapper getInstance() {
         return INSTANCE;
     }
 }
+

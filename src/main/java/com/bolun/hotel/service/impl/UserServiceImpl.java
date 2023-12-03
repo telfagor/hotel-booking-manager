@@ -1,5 +1,6 @@
 package com.bolun.hotel.service.impl;
 
+import com.bolun.hotel.connection.ConnectionManager;
 import lombok.NoArgsConstructor;
 import com.bolun.hotel.entity.User;
 import com.bolun.hotel.dao.UserDao;
@@ -7,13 +8,14 @@ import com.bolun.hotel.dto.ReadUserDto;
 import com.bolun.hotel.dto.CreateUserDto;
 import com.bolun.hotel.dao.impl.UserDaoImpl;
 import com.bolun.hotel.service.UserService;
-import com.bolun.hotel.validator.ValidatorImpl;
+import com.bolun.hotel.validator.UserValidatorImpl;
 import com.bolun.hotel.validator.ValidationResult;
 import com.bolun.hotel.mapper.impl.ReadUserDtoMapper;
 import com.bolun.hotel.exception.UserNotValidException;
 import com.bolun.hotel.mapper.impl.CreateUserDtoMapper;
 
-import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.Optional;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -25,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao = UserDaoImpl.getInstance();
     private final CreateUserDtoMapper createUserDtoMapper = CreateUserDtoMapper.getInstance();
     private final ReadUserDtoMapper readUserDtoMapper = ReadUserDtoMapper.getInstance();
-    private final ValidatorImpl validator = ValidatorImpl.getInstance();
+    private final UserValidatorImpl validator = UserValidatorImpl.getInstance();
 
     @Override
     public Long save(CreateUserDto createUserDto) {
@@ -37,6 +39,11 @@ public class UserServiceImpl implements UserService {
         User user = createUserDtoMapper.mapFrom(createUserDto);
 
         return userDao.save(user).getId();
+    }
+
+    @Override
+    public void saveUserDetail(Long id) {
+        userDao.saveUserDetail(id);
     }
 
     @Override

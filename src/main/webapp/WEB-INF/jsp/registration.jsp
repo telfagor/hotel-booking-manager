@@ -10,6 +10,8 @@
     </style>
 </head>
 <body>
+
+<%@ include file="header.jsp"%>
 <h1>Registration</h1>
 <form action="${pageContext.request.contextPath}/registration" method="post" enctype="application/x-ww-urlencoded">
     <label for="first_name">First Name:</label>
