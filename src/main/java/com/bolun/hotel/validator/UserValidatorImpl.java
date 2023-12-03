@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
-public class ValidatorImpl implements Validator<CreateUserDto> {
+public class UserValidatorImpl implements Validator<CreateUserDto> {
 
-    private static final ValidatorImpl INSTANCE = new ValidatorImpl();
+    private static final UserValidatorImpl INSTANCE = new UserValidatorImpl();
 
     @Override
     public ValidationResult isValid(CreateUserDto createUserDto) {
@@ -43,7 +43,7 @@ public class ValidatorImpl implements Validator<CreateUserDto> {
         return validationResult;
     }
 
-    public static ValidatorImpl getInstance() {
+    public static UserValidatorImpl getInstance() {
         return INSTANCE;
     }
 }

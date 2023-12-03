@@ -4,8 +4,15 @@
 <html>
 <head>
     <title>Login</title>
+    <style>
+        .error-message {
+            color: red;
+        }
+    </style>
 </head>
 <body>
+
+<%@ include file="header.jsp"%>
 <form action="${pageContext.request.contextPath}/login" method="post" enctype="application/x-www-form-urlencoded">
     <label for="email">Email:</label>
     <input type="email" name="email" id="email" value="${param.email}" required>
@@ -23,7 +30,7 @@
     <div>
         <span>
             <c:if test="${param.error != null}">
-                <p>Email or password is not correct!</p>
+                <p class="error-message">Email or password is not correct!</p>
             </c:if>
         </span>
     </div>

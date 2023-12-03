@@ -4,6 +4,6 @@
     <title>Title</title>
 </head>
 <body>
-    <h1>Welcome to our application!</h1>
+    <h1>Welcome to our hotel!</h1>
 </body>
 </html>

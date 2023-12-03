@@ -17,12 +17,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.stream.Collectors.joining;
 import static lombok.AccessLevel.PRIVATE;
+import static java.util.stream.Collectors.joining;
 
 @NoArgsConstructor(access = PRIVATE)
 public class UserDaoImpl implements UserDao {
 
+    private static final String ID = "id";
     private static final String USER_ID = "user_id";
     private static final String FIRST_NAME = "first_name";
     private static final String LAST_NAME = "last_name";
@@ -42,6 +43,11 @@ public class UserDaoImpl implements UserDao {
             VALUES (?, ?, ?, ?, ?, ?)
             """;
 
+    private static final String INSERT_USER_DETAIL_ID = """
+            INSERT INTO "user" (user_detail_id)
+            VALUES (?)
+            """;
+
     private static final String UPDATE_SQL = """
             UPDATE "user"
             SET first_name = ?,
@@ -50,7 +56,8 @@ public class UserDaoImpl implements UserDao {
                 user_password = ?,
                 role_id = ?,
                 gender_id = ?,
-                user_detail_id = ? 
+                user_detail_id = ?
+                WHERE id = ?
             """;
 
     private static final String IS_EMAIL_EXIST = """
@@ -105,9 +112,20 @@ public class UserDaoImpl implements UserDao {
 
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
-            user.setId(resultSet.getLong("id"));
+            user.setId(resultSet.getLong(ID));
 
             return user;
+        } catch (SQLException ex) {
+            throw new DaoException(ex.getMessage(), ex);
+        }
+    }
+
+    @Override
+    public void saveUserDetail(Long id) {
+        try (Connection connection = ConnectionManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_DETAIL_ID)) {
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             throw new DaoException(ex.getMessage(), ex);
         }
@@ -123,12 +141,15 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setString(4, user.getPassword());
             preparedStatement.setLong(5, user.getRole().getValue());
             preparedStatement.setLong(6, user.getGender().getValue());
-            preparedStatement.setObject(7, user.getUserDetail().getId());
+            preparedStatement.setObject(7, user.getUserDetail() != null ? user.getUserDetail().getId() : null);
+            preparedStatement.setLong(8, user.getId());
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException ex) {
-            throw new DaoException("An error occur when trying to update a user!", ex);
+            throw new DaoException(ex.getMessage(), ex);
         }
     }
+
+
 
     @Override
     public Optional<User> findByEmailAndPassword(String email, String password) {
@@ -145,7 +166,7 @@ public class UserDaoImpl implements UserDao {
 
             return Optional.ofNullable(user);
         } catch (SQLException ex) {
-            throw new DaoException("An error occur when trying to find a user by email and password", ex);
+            throw new DaoException(ex.getMessage(), ex);
         }
     }
 
@@ -157,7 +178,7 @@ public class UserDaoImpl implements UserDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             return resultSet.next();
         } catch (SQLException ex) {
-            throw new DaoException("An error occur when trying to find a user by email and password", ex);
+            throw new DaoException(ex.getMessage(), ex);
         }
     }
 
@@ -176,7 +197,7 @@ public class UserDaoImpl implements UserDao {
 
             return Optional.ofNullable(user);
         } catch (SQLException ex) {
-            throw new DaoException("An error occur when trying to find a user by id!", ex);
+            throw new DaoException(ex.getMessage(), ex);
         }
     }
 
@@ -240,9 +261,7 @@ public class UserDaoImpl implements UserDao {
 
             return users;
         } catch (SQLException ex) {
-            throw new DaoException("An error occur when trying find all users!", ex);
-        } catch (IllegalAccessError ex) {
-            throw new DaoException("An error occur when trying find all users!", ex);
+            throw new DaoException(ex.getMessage(), ex);
         }
     }
 
@@ -281,7 +300,7 @@ public class UserDaoImpl implements UserDao {
                 users.add(buildUser(resultSet));
             }
         } catch (SQLException ex) {
-            throw new DaoException("An error occur when are trying find all user by filter!", ex);
+            throw new DaoException(ex.getMessage(), ex);
         }
         return users;
     }
@@ -290,9 +309,9 @@ public class UserDaoImpl implements UserDao {
         StringBuilder stringBuilder = new StringBuilder();
         int start = 0;
         int upperLetterPos = 0;
-        int nextPosAfterUpperLetter;
+        int nextAfterUpperLetterPos;
 
-        for (int i = 0; i < name.length(); i += nextPosAfterUpperLetter) {
+        for (int i = 0; i < name.length(); i += nextAfterUpperLetterPos) {
             char letter = name.charAt(i);
             if (Character.isUpperCase(letter)) {
                 upperLetterPos = i;
@@ -301,7 +320,7 @@ public class UserDaoImpl implements UserDao {
                 stringBuilder.append(Character.toLowerCase(letter));
             }
             start = upperLetterPos + 1;
-            nextPosAfterUpperLetter = upperLetterPos + 1;
+            nextAfterUpperLetterPos = upperLetterPos + 1;
         }
 
         return stringBuilder.toString();
@@ -315,7 +334,7 @@ public class UserDaoImpl implements UserDao {
             preparedStatement.setLong(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException ex) {
-            throw new DaoException("An error occur when trying to delete an user!", ex);
+            throw new DaoException(ex.getMessage(), ex);
         }
     }
 
