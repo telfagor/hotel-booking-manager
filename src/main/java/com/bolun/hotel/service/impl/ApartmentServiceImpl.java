@@ -7,7 +7,6 @@ import com.bolun.hotel.dao.impl.OrderDaoImpl;
 import com.bolun.hotel.dto.ReadApartmentDto;
 import com.bolun.hotel.entity.Apartment;
 import com.bolun.hotel.entity.Order;
-import com.bolun.hotel.entity.enums.ApartmentStatus;
 import com.bolun.hotel.service.ApartmentService;
 import lombok.NoArgsConstructor;
 
@@ -39,7 +38,6 @@ public class ApartmentServiceImpl implements ApartmentService {
                         apartment.getType().name()
                 ))
                 .toList();
-
     }
 
     private void verifyTheApartmentStatus() {

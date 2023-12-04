@@ -24,7 +24,6 @@ public class CreateUserDetailDtoMapper implements Mapper<CreateUserDetailDto, Us
                 .birthdate(LocalDateFormatter.format(object.birthdate()))
                 .money(Integer.parseInt(object.money()))
                 .photo(photo.isBlank() ? photo.strip() : IMAGE_PARENT.concat(photo))
-                .photo(IMAGE_PARENT + object.photo().getSubmittedFileName())
                 .build();
     }
 

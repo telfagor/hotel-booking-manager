@@ -32,6 +32,7 @@ public class PriceCalculation {
 
             LocalDateTime checkIn = LocalDateTimeFormatter.format(createOrderDto.checkIn().concat(":00"));
             LocalDateTime checkOut = LocalDateTimeFormatter.format(createOrderDto.checkOut().concat(":00"));
+
             long hours = ChronoUnit.HOURS.between(checkIn, checkOut);
             int userMoney = user.getUserDetail().getMoney();
             BigDecimal pricePerHour = apartment.getPricePerHour();

@@ -34,7 +34,6 @@ public class UserServiceImpl implements UserService {
             throw new UserNotValidException(validationResult.getErrors());
         }
         User user = createUserDtoMapper.mapFrom(createUserDto);
-
         return userDao.save(user).getId();
     }
 
