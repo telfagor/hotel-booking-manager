@@ -1,6 +1,5 @@
 package com.bolun.hotel.service.impl;
 
-import com.bolun.hotel.connection.ConnectionManager;
 import lombok.NoArgsConstructor;
 import com.bolun.hotel.entity.User;
 import com.bolun.hotel.dao.UserDao;
@@ -8,14 +7,12 @@ import com.bolun.hotel.dto.ReadUserDto;
 import com.bolun.hotel.dto.CreateUserDto;
 import com.bolun.hotel.dao.impl.UserDaoImpl;
 import com.bolun.hotel.service.UserService;
-import com.bolun.hotel.validator.UserValidatorImpl;
-import com.bolun.hotel.validator.ValidationResult;
+import com.bolun.hotel.helper.validator.UserValidatorImpl;
+import com.bolun.hotel.helper.validator.ValidationResult;
 import com.bolun.hotel.mapper.impl.ReadUserDtoMapper;
 import com.bolun.hotel.exception.UserNotValidException;
 import com.bolun.hotel.mapper.impl.CreateUserDtoMapper;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.util.Optional;
 
 import static lombok.AccessLevel.PRIVATE;

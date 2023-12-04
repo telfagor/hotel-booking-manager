@@ -1,4 +1,4 @@
-package com.bolun.hotel.validator;
+package com.bolun.hotel.helper.validator;
 
 import com.bolun.hotel.dto.CreateUserDetailDto;
 import com.bolun.hotel.helper.AgeCalculation;

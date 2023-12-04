@@ -1,11 +1,10 @@
 package com.bolun.hotel.mapper.impl;
 
-import jakarta.servlet.http.Part;
-import lombok.NoArgsConstructor;
-import com.bolun.hotel.mapper.Mapper;
-import com.bolun.hotel.entity.UserDetail;
 import com.bolun.hotel.dto.CreateUserDetailDto;
+import com.bolun.hotel.entity.UserDetail;
 import com.bolun.hotel.helper.LocalDateFormatter;
+import com.bolun.hotel.mapper.Mapper;
+import lombok.NoArgsConstructor;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -25,6 +24,7 @@ public class CreateUserDetailDtoMapper implements Mapper<CreateUserDetailDto, Us
                 .birthdate(LocalDateFormatter.format(object.birthdate()))
                 .money(Integer.parseInt(object.money()))
                 .photo(photo.isBlank() ? photo.strip() : IMAGE_PARENT.concat(photo))
+                .photo(IMAGE_PARENT + object.photo().getSubmittedFileName())
                 .build();
     }
 

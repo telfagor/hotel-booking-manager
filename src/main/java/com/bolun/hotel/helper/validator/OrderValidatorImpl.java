@@ -1,4 +1,4 @@
-package com.bolun.hotel.validator;
+package com.bolun.hotel.helper.validator;
 
 import com.bolun.hotel.dto.CreateOrderDto;
 import com.bolun.hotel.helper.LocalDateTimeFormatter;
@@ -16,7 +16,6 @@ public class OrderValidatorImpl implements Validator<CreateOrderDto> {
     public ValidationResult isValid(CreateOrderDto createOrderDto) {
         ValidationResult validationResult = new ValidationResult();
         boolean isDateTimeEmpty = false;
-
 
         if (createOrderDto.checkIn() == null || createOrderDto.checkIn().isBlank()) {
             validationResult.add(Error.of("invalid.date", "end date is not selected"));
@@ -50,6 +49,19 @@ public class OrderValidatorImpl implements Validator<CreateOrderDto> {
 
         if (!PriceCalculation.isEnoughMoney(createOrderDto)) {
             validationResult.add(Error.of("insufficient.money", "insufficient money"));
+        }
+
+        if (!LocalDateTimeFormatter.isValid(createOrderDto.checkIn().concat(":00"))) {
+            validationResult.add(Error.of("invalid.date", "invalid start to stay"));
+        }
+
+        if (!LocalDateTimeFormatter.isValid(createOrderDto.checkOut().concat(":00"))) {
+            validationResult.add(Error.of("invalid.date", "invalid end to stay"));
+        }
+
+        if (LocalDateTimeFormatter.format(createOrderDto.checkIn().concat(":00"))
+                .isAfter(LocalDateTimeFormatter.format(createOrderDto.checkOut().concat(":00")))) {
+            validationResult.add(Error.of("invalid.interval", "invalid date time interval"));
         }
 
         return validationResult;

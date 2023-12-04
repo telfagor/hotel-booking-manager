@@ -8,12 +8,11 @@ import com.bolun.hotel.dao.impl.OrderDaoImpl;
 import com.bolun.hotel.dao.impl.UserDaoImpl;
 import com.bolun.hotel.dto.CreateOrderDto;
 import com.bolun.hotel.entity.Order;
-import com.bolun.hotel.entity.enums.ApartmentStatus;
 import com.bolun.hotel.exception.InvalidDateException;
 import com.bolun.hotel.mapper.impl.CreateOrderDtoMapper;
 import com.bolun.hotel.service.OrderService;
-import com.bolun.hotel.validator.OrderValidatorImpl;
-import com.bolun.hotel.validator.ValidationResult;
+import com.bolun.hotel.helper.validator.OrderValidatorImpl;
+import com.bolun.hotel.helper.validator.ValidationResult;
 import lombok.NoArgsConstructor;
 
 import static com.bolun.hotel.entity.enums.ApartmentStatus.*;

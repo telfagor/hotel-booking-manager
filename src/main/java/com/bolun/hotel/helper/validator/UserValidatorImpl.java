@@ -1,4 +1,4 @@
-package com.bolun.hotel.validator;
+package com.bolun.hotel.helper.validator;
 
 import com.bolun.hotel.dto.CreateUserDto;
 import com.bolun.hotel.entity.enums.Gender;

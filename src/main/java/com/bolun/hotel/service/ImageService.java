@@ -12,6 +12,20 @@ import java.util.Optional;
 import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 import static lombok.AccessLevel.PRIVATE;
+import com.bolun.hotel.servlet.ImageServlet;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.Optional;
+import java.io.InputStream;
+
+import static java.nio.file.StandardOpenOption.*;
+import static lombok.AccessLevel.*;
 
 @NoArgsConstructor(access = PRIVATE)
 public class ImageService {
@@ -34,6 +48,10 @@ public class ImageService {
     public void upload(String imagePath, InputStream imageContent) {
         Path imageFullPath = Path.of(baseUrl, imagePath);
         if (imageContent.available() != 0) {
+            try (imageContent) {
+                Files.createDirectories(imageFullPath.getParent());
+                Files.write(imageFullPath, imageContent.readAllBytes(), CREATE, TRUNCATE_EXISTING);
+            }
             try (imageContent) {
                 Files.createDirectories(imageFullPath.getParent());
                 Files.write(imageFullPath, imageContent.readAllBytes(), CREATE, TRUNCATE_EXISTING);

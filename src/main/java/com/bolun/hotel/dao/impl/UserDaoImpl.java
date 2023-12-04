@@ -22,6 +22,7 @@ import static java.util.stream.Collectors.joining;
 
 @NoArgsConstructor(access = PRIVATE)
 public class UserDaoImpl implements UserDao {
+    private static final UserDao INSTANCE = new UserDaoImpl();
 
     private static final String ID = "id";
     private static final String USER_ID = "user_id";
@@ -35,7 +36,6 @@ public class UserDaoImpl implements UserDao {
     private static final String CONTACT_NUMBER = "contact_number";
     private static final String USER_PHOTO = "user_photo";
     private static final String BIRTHDATE = "birthdate";
-    private static final UserDao INSTANCE = new UserDaoImpl();
 
     private static final String INSERT_SQL = """
             INSERT INTO "user"
@@ -125,7 +125,6 @@ public class UserDaoImpl implements UserDao {
     public void saveUserDetail(Long id) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_DETAIL_ID)) {
-            preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
             throw new DaoException(ex.getMessage(), ex);
@@ -149,6 +148,7 @@ public class UserDaoImpl implements UserDao {
             throw new DaoException(ex.getMessage(), ex);
         }
     }
+
 
 
     @Override

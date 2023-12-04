@@ -81,6 +81,33 @@ public class OrderDaoImpl implements OrderDao {
             FROM "order" o JOIN apartment ap
             ON o.apartment_id = ap.id
             WHERE ap.id = ?
+                               check_in,
+                               check_out,
+                               user_id,
+                               order_status_id,
+                               apartment_id,
+                               order_status_id,
+                               apartment_id,
+                               u.id,
+                               u.first_name,
+                               u.last_name,
+                               u.email,
+                               u.user_password,
+                               us.id,
+                               us.contact_number,
+                               us.photo,
+                               g.id,
+                               g.gender_type,
+                               r.id,
+                               r.user_role
+                        FROM "order" o JOIN order_status os
+                        ON o.order_status_id = os.id JOIN apartment a
+                        ON o.apartment_id = a.id JOIN "user" u
+                        ON o.user_id = u.id JOIN gender g
+                        ON u.gender_id = g.id JOIN "role" r
+                        ON u.role_id = r.id LEFT JOIN user_detail us
+                        ON u.user_detail_id = us.id
+                        WHERE id = 1;
             """;
 
     private static final String DELETE_BY_ID = """
