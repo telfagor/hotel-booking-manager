@@ -10,8 +10,8 @@ import com.bolun.hotel.exception.UserDetailNotValidationException;
 import com.bolun.hotel.mapper.impl.CreateUserDetailDtoMapper;
 import com.bolun.hotel.service.ImageService;
 import com.bolun.hotel.service.UserDetailService;
-import com.bolun.hotel.helper.validator.UserDetailValidatorImpl;
-import com.bolun.hotel.helper.validator.ValidationResult;
+import com.bolun.hotel.validator.UserDetailValidatorImpl;
+import com.bolun.hotel.validator.ValidationResult;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 

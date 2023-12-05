@@ -4,7 +4,7 @@ import com.bolun.hotel.dto.CreateUserDto;
 import com.bolun.hotel.entity.enums.Gender;
 import com.bolun.hotel.entity.enums.Role;
 import com.bolun.hotel.exception.UserNotValidException;
-import com.bolun.hotel.helper.JspHelper;
+import com.bolun.hotel.mapper.helper.JspHelper;
 import com.bolun.hotel.service.UserService;
 import com.bolun.hotel.service.impl.UserServiceImpl;
 import jakarta.servlet.ServletException;
@@ -16,8 +16,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.io.IOException;
 
-import static com.bolun.hotel.helper.UrlPath.LOGIN;
-import static com.bolun.hotel.helper.UrlPath.REGISTRATION;
+import static com.bolun.hotel.mapper.helper.UrlPath.LOGIN;
+import static com.bolun.hotel.mapper.helper.UrlPath.REGISTRATION;
 
 @WebServlet(REGISTRATION)
 public class RegistrationServlet extends HttpServlet {

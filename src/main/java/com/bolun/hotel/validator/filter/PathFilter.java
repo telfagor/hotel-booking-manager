@@ -1,4 +1,4 @@
-package com.bolun.hotel.filter;
+package com.bolun.hotel.validator.filter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -6,7 +6,7 @@ import jakarta.servlet.annotation.WebFilter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import static com.bolun.hotel.helper.UrlPath.ALL;
+import static com.bolun.hotel.mapper.helper.UrlPath.ALL;
 
 @WebFilter(ALL)
 public class PathFilter implements Filter {

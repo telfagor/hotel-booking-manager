@@ -2,7 +2,7 @@ package com.bolun.hotel.exception;
 
 import lombok.Getter;
 import java.util.List;
-import com.bolun.hotel.helper.validator.Error;
+import com.bolun.hotel.validator.Error;
 
 public class UserNotValidException extends RuntimeException {
 

@@ -2,7 +2,7 @@ package com.bolun.hotel.mapper.impl;
 
 import com.bolun.hotel.dto.CreateUserDetailDto;
 import com.bolun.hotel.entity.UserDetail;
-import com.bolun.hotel.helper.LocalDateFormatter;
+import com.bolun.hotel.mapper.helper.LocalDateFormatter;
 import com.bolun.hotel.mapper.Mapper;
 import lombok.NoArgsConstructor;
 

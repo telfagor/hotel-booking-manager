@@ -1,7 +1,7 @@
 package com.bolun.hotel.servlet;
 
 import com.bolun.hotel.dto.ReadUserDto;
-import com.bolun.hotel.helper.JspHelper;
+import com.bolun.hotel.mapper.helper.JspHelper;
 import com.bolun.hotel.service.UserService;
 import com.bolun.hotel.service.impl.UserServiceImpl;
 import jakarta.servlet.ServletException;
@@ -13,8 +13,8 @@ import lombok.SneakyThrows;
 
 import java.io.IOException;
 
-import static com.bolun.hotel.helper.UrlPath.LOGIN;
-import static com.bolun.hotel.helper.UrlPath.APARTMENT;
+import static com.bolun.hotel.mapper.helper.UrlPath.LOGIN;
+import static com.bolun.hotel.mapper.helper.UrlPath.APARTMENT;
 
 @WebServlet(LOGIN)
 public class LoginServlet extends HttpServlet {

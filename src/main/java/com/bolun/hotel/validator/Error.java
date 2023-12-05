@@ -1,4 +1,4 @@
-package com.bolun.hotel.helper.validator;
+package com.bolun.hotel.validator;
 
 import lombok.Value;
 

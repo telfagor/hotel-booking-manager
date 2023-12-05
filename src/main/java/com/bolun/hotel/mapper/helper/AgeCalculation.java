@@ -1,4 +1,4 @@
-package com.bolun.hotel.helper;
+package com.bolun.hotel.mapper.helper;
 
 import lombok.experimental.UtilityClass;
 

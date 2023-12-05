@@ -1,4 +1,4 @@
-package com.bolun.hotel.helper;
+package com.bolun.hotel.mapper.helper;
 
 import com.bolun.hotel.dao.ApartmentDao;
 import com.bolun.hotel.dao.UserDao;

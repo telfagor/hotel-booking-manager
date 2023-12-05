@@ -1,6 +1,6 @@
 package com.bolun.hotel.servlet;
 
-import com.bolun.hotel.helper.JspHelper;
+import com.bolun.hotel.mapper.helper.JspHelper;
 import com.bolun.hotel.service.ApartmentService;
 import com.bolun.hotel.service.impl.ApartmentServiceImpl;
 import jakarta.servlet.ServletException;
@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-import static com.bolun.hotel.helper.UrlPath.APARTMENT;
+import static com.bolun.hotel.mapper.helper.UrlPath.APARTMENT;
 
 @WebServlet(APARTMENT)
 public class ApartmentServlet extends HttpServlet {
