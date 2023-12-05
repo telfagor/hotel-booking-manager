@@ -31,8 +31,10 @@ public class UserDaoImplTest {
     @DisplayName("save user without user detail")
     void saveWithoutUserDetail() {
         User user = createUser();
+
         User actualResult = userDao.save(user);
         users.add(user);
+
         assertNotNull(actualResult.getId());
     }
 

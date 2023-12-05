@@ -1,5 +1,9 @@
 package com.bolun.hotel.dao.impl;
 
+import com.bolun.hotel.entity.Apartment;
+import com.bolun.hotel.entity.User;
+import com.bolun.hotel.entity.UserDetail;
+import com.bolun.hotel.entity.enums.*;
 import lombok.SneakyThrows;
 import lombok.NoArgsConstructor;
 import com.bolun.hotel.entity.Order;
@@ -7,6 +11,7 @@ import com.bolun.hotel.dao.OrderDao;
 import com.bolun.hotel.exception.DaoException;
 import com.bolun.hotel.connection.ConnectionManager;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -22,6 +27,24 @@ public class OrderDaoImpl implements OrderDao {
     private static final String ID = "id";
     private static final String CHECK_IN = "check_in";
     private static final String CHECK_OUT = "check_out";
+    private static final String USER_ID = "user_id";
+    private static final String FIRST_NAME = "first_name";
+    private static final String LAST_NAME = "last_name";
+    private static final String EMAIL = "email";
+    private static final String USER_PASSWORD = "user_password";
+    private static final String USER_ROLE = "user_role";
+    private static final String GENDER = "gender_type";
+    private static final String USER_DETAIL_ID = "user_detail_id";
+    private static final String CONTACT_NUMBER = "contact_number";
+    private static final String USER_PHOTO = "photo";
+    private static final String BIRTHDATE = "birthdate";
+    private static final String MONEY = "money";
+    private static final String NUMBER_OF_ROOMS = "number_of_rooms";
+    private static final String NUMBER_OF_SEATS = "number_of_seats";
+    private static final String PRICE_PER_HOUR = "price_per_hour";
+    private static final String PHOTO = "photo";
+    private static final String STATUS = "ap_status";
+    private static final String TYPE = "ap_type";
 
     private static final String INSERT_SQL = """
             INSERT INTO "order" (check_in, check_out, user_id, order_status_id, apartment_id) 
@@ -38,39 +61,56 @@ public class OrderDaoImpl implements OrderDao {
             WHERE id = ?
             """;
 
-    private static final String FIND_BY_ID = """
+    private static final String FIND_ALL_SQL = """
             SELECT o.id,
-                   check_in,
-                   check_out,
-                   user_id,
-                   order_status_id,
-                   apartment_id,
-                   order_status_id,
-                   apartment_id,
+                   o.check_in,
+                   o.check_out,
+                   o.user_id,
+                   o.order_status_id,
+                   o.apartment_id,
+                   os.status,           
                    u.id,
                    u.first_name,
                    u.last_name,
                    u.email,
                    u.user_password,
+                   u.role_id,
+                   u.gender_id,
+                   u.user_detail_id,
                    us.id,
                    us.contact_number,
                    us.photo,
+                   us.birthdate,
+                   us.money,
                    g.id,
                    g.gender_type,
                    r.id,
-                   r.user_role
+                   r.user_role,
+                   a.id,
+                   a.number_of_rooms,
+                   a.number_of_seats,
+                   a.price_per_hour,
+                   a.photo,
+                   ap_status AS status,
+                   ap_type AS apartment_type,
+                   aps.id,
+                   aps.ap_status,
+                   ap.id,
+                   ap.ap_type
             FROM "order" o JOIN order_status os
             ON o.order_status_id = os.id JOIN apartment a
-            ON o.apartment_id = a.id JOIN "user" u
+            ON o.apartment_id = a.id JOIN apartment_status aps
+            ON a.apartment_status_id = aps.id JOIN apartment_type ap
+            ON a.apartment_type_id = ap.id JOIN "user" u
             ON o.user_id = u.id JOIN gender g
             ON u.gender_id = g.id JOIN "role" r
             ON u.role_id = r.id LEFT JOIN user_detail us
             ON u.user_detail_id = us.id
-            WHERE o.id = ?;
             """;
 
-    private static final String FIND_ORDERS_BY_APARTMENT_ID = """
-            SELECT o.id,
+    private static final String FIND_BY_ID = FIND_ALL_SQL + " WHERE o.id = ?";
+    private static final String FIND_ORDERS_BY_APARTMENT_ID = FIND_ALL_SQL + " WHERE a.id = ?";
+            /*SELECT o.id,
                    check_in,
                    check_out,
                    user_id,
@@ -80,9 +120,8 @@ public class OrderDaoImpl implements OrderDao {
                    apartment_id
             FROM "order" o JOIN apartment ap
             ON o.apartment_id = ap.id
-            WHERE ap.id = ?
+            WHERE ap.id = ?*/
                                
-            """;
 
     private static final String DELETE_BY_ID = """
             DELETE FROM "order"
@@ -144,10 +183,29 @@ public class OrderDaoImpl implements OrderDao {
         }
     }
 
+
+
+    @Override
     public List<Order> findByApartmentId(Long id) {
         try (Connection connection = ConnectionManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ORDERS_BY_APARTMENT_ID)) {
             preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            List<Order> orders = new ArrayList<>();
+            while (resultSet.next()) {
+                orders.add(buildOrder(resultSet));
+            }
+
+            return orders;
+        } catch (SQLException ex) {
+            throw new DaoException(ex.getMessage(), ex);
+        }
+    }
+
+    public List<Order> findAll() {
+        try (Connection connection = ConnectionManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             List<Order> orders = new ArrayList<>();
@@ -178,6 +236,51 @@ public class OrderDaoImpl implements OrderDao {
                 .id(resultSet.getLong(ID))
                 .checkIn(resultSet.getTimestamp(CHECK_IN).toLocalDateTime())
                 .checkOut(resultSet.getTimestamp(CHECK_OUT).toLocalDateTime())
+                .user(buildUser(resultSet))
+                .apartment(buildApartment(resultSet))
+                .status(OrderStatus.valueOf(resultSet.getObject("status", String.class)))
+                .build();
+    }
+
+    @SneakyThrows
+    private User buildUser(ResultSet resultSet) {
+        return User.builder()
+                .id(resultSet.getObject(USER_ID, Long.class))
+                .firstName(resultSet.getObject(FIRST_NAME, String.class))
+                .lastName(resultSet.getObject(LAST_NAME, String.class))
+                .email(resultSet.getObject(EMAIL, String.class))
+                .password(resultSet.getObject(USER_PASSWORD, String.class))
+                .role(Role.valueOf(resultSet.getObject(USER_ROLE, String.class)))
+                .gender(Gender.valueOf(resultSet.getObject(GENDER, String.class)))
+                .userDetail(getUserDetail(resultSet).orElse(null))
+                .build();
+    }
+
+    @SneakyThrows
+    private Optional<UserDetail> getUserDetail(ResultSet resultSet) {
+        if (resultSet.getObject(USER_DETAIL_ID, Long.class) != null) {
+            return Optional.of(UserDetail.builder()
+                    .id(resultSet.getObject(USER_DETAIL_ID, Long.class))
+                    .contactNumber(resultSet.getObject(CONTACT_NUMBER, String.class))
+                    .photo(resultSet.getObject(USER_PHOTO, String.class))
+                    .birthdate(resultSet.getObject(BIRTHDATE, Date.class).toLocalDate())
+                    .money(resultSet.getObject(MONEY, Integer.class))
+                    .build());
+        }
+
+        return Optional.empty();
+    }
+
+    @SneakyThrows
+    private Apartment buildApartment(ResultSet resultSet) {
+        return Apartment.builder()
+                .id(resultSet.getObject(ID, Long.class))
+                .numberOfRooms(resultSet.getObject(NUMBER_OF_ROOMS, Integer.class))
+                .numberOfSeats(resultSet.getObject(NUMBER_OF_SEATS, Integer.class))
+                .pricePerHour(resultSet.getObject(PRICE_PER_HOUR, BigDecimal.class))
+                .photo(resultSet.getObject(PHOTO, String.class))
+                .status(ApartmentStatus.valueOf(resultSet.getObject(STATUS, String.class)))
+                .type(ApartmentType.valueOf(resultSet.getObject(TYPE, String.class)))
                 .build();
     }
 

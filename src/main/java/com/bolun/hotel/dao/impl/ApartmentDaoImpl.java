@@ -82,7 +82,7 @@ public class ApartmentDaoImpl implements ApartmentDao {
             preparedStatement.setInt(6, apartment.getType().getValue());
             preparedStatement.executeUpdate();
 
-            ResultSet resultSet = preparedStatement.getResultSet();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
             resultSet.next();
             apartment.setId(resultSet.getLong(ID));
 
@@ -99,7 +99,7 @@ public class ApartmentDaoImpl implements ApartmentDao {
             preparedStatement.setInt(1, apartment.getNumberOfRooms());
             preparedStatement.setInt(2, apartment.getNumberOfSeats());
             preparedStatement.setBigDecimal(3, apartment.getPricePerHour());
-            preparedStatement.setString(4, apartment.getPhoto());
+            preparedStatement.setObject(4, apartment.getPhoto());
             preparedStatement.setInt(5, apartment.getStatus().getValue());
             preparedStatement.setInt(6, apartment.getType().getValue());
             preparedStatement.setLong(7, apartment.getId());
@@ -112,7 +112,7 @@ public class ApartmentDaoImpl implements ApartmentDao {
     @Override
     public Optional<Apartment> findById(Long id) {
         try (Connection connection = ConnectionManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID, Statement.RETURN_GENERATED_KEYS)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_ID)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
 

@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Registration</title>
@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<%@ include file="header.jsp"%>
+<%@ include file="header.jsp" %>
 <h1>Registration</h1>
 <form action="${pageContext.request.contextPath}/registration" method="post" enctype="application/x-ww-urlencoded">
     <label for="first_name">First Name:</label>
@@ -41,10 +41,13 @@
     <br>
     <button type="submit">Submit</button>
 </form>
-    <c:if test="${not empty requestScope.errors}">
-        <c:forEach var="error" items="${requestScope.errors}">
-            <span class="color-message">${error.message}</span>
-        </c:forEach>
-    </c:if>
+<a href="${pageContext.request.contextPath}/login">
+    <button type="button">Login</button>
+</a>
+<c:if test="${not empty requestScope.errors}">
+    <c:forEach var="error" items="${requestScope.errors}">
+        <span class="color-message">${error.message}</span>
+    </c:forEach>
+</c:if>
 </body>
 </html>

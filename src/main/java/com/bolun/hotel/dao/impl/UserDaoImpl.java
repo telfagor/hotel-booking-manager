@@ -36,6 +36,7 @@ public class UserDaoImpl implements UserDao {
     private static final String CONTACT_NUMBER = "contact_number";
     private static final String USER_PHOTO = "user_photo";
     private static final String BIRTHDATE = "birthdate";
+    private static final String MONEY = "money";
 
     private static final String INSERT_SQL = """
             INSERT INTO "user"
@@ -76,7 +77,7 @@ public class UserDaoImpl implements UserDao {
                    us.contact_number AS contact_number,
                    us.photo AS user_photo,
                    us.birthdate AS birthdate,
-                   us.user_money AS money,
+                   us.money AS money,
                    g.id AS gender_id,
                    g.gender_type AS gender,
                    r.id AS role_id,
@@ -359,7 +360,7 @@ public class UserDaoImpl implements UserDao {
                     .contactNumber(resultSet.getObject(CONTACT_NUMBER, String.class))
                     .photo(resultSet.getObject(USER_PHOTO, String.class))
                     .birthdate(resultSet.getObject(BIRTHDATE, Date.class).toLocalDate())
-                    .money(resultSet.getObject("money", Integer.class))
+                    .money(resultSet.getObject(MONEY, Integer.class))
                     .build());
         }
 

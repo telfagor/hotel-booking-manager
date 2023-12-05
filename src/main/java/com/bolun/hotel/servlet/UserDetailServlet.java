@@ -3,7 +3,7 @@ package com.bolun.hotel.servlet;
 import com.bolun.hotel.dto.CreateUserDetailDto;
 import com.bolun.hotel.dto.ReadUserDto;
 import com.bolun.hotel.exception.UserDetailNotValidationException;
-import com.bolun.hotel.mapper.helper.JspHelper;
+import com.bolun.hotel.helper.JspHelper;
 import com.bolun.hotel.service.UserDetailService;
 import com.bolun.hotel.service.impl.UserDetailServiceImpl;
 import jakarta.servlet.ServletException;
@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-import static com.bolun.hotel.mapper.helper.UrlPath.USER_DETAIL;
+import static com.bolun.hotel.helper.UrlPath.USER_DETAIL;
 
 @MultipartConfig(fileSizeThreshold = 1024 * 1024)
 @WebServlet(USER_DETAIL)

@@ -3,7 +3,7 @@ package com.bolun.hotel.servlet;
 import com.bolun.hotel.dto.CreateOrderDto;
 import com.bolun.hotel.dto.ReadUserDto;
 import com.bolun.hotel.exception.InvalidDateException;
-import com.bolun.hotel.mapper.helper.JspHelper;
+import com.bolun.hotel.helper.JspHelper;
 import com.bolun.hotel.service.ApartmentService;
 import com.bolun.hotel.service.OrderService;
 import com.bolun.hotel.service.impl.ApartmentServiceImpl;
@@ -17,8 +17,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-import static com.bolun.hotel.mapper.helper.UrlPath.LOGIN;
-import static com.bolun.hotel.mapper.helper.UrlPath.ORDER;
+import static com.bolun.hotel.helper.UrlPath.LOGIN;
+import static com.bolun.hotel.helper.UrlPath.ORDER;
 
 @WebServlet(ORDER)
 public class OrderServlet extends HttpServlet {

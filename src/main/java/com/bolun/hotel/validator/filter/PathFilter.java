@@ -6,7 +6,7 @@ import jakarta.servlet.annotation.WebFilter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-import static com.bolun.hotel.mapper.helper.UrlPath.ALL;
+import static com.bolun.hotel.helper.UrlPath.ALL;
 
 @WebFilter(ALL)
 public class PathFilter implements Filter {

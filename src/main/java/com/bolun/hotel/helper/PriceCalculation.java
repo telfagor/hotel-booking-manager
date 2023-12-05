@@ -1,4 +1,4 @@
-package com.bolun.hotel.mapper.helper;
+package com.bolun.hotel.helper;
 
 import com.bolun.hotel.dao.ApartmentDao;
 import com.bolun.hotel.dao.UserDao;
@@ -26,7 +26,7 @@ public class PriceCalculation {
         Optional<Apartment> maybeApartment = apartmentDao.findById(Long.parseLong(createOrderDto.apartmentId()));
         boolean isEnoughMoney = false;
 
-        if (maybeUser.isPresent() && maybeApartment.isPresent()) {
+        //if (maybeUser.isPresent() && maybeApartment.isPresent()) {
             User user = maybeUser.get();
             Apartment apartment = maybeApartment.get();
 
@@ -38,7 +38,7 @@ public class PriceCalculation {
             BigDecimal pricePerHour = apartment.getPricePerHour();
 
             isEnoughMoney = hours * pricePerHour.longValue() <= userMoney;
-        }
+        //}
 
         return isEnoughMoney;
     }
