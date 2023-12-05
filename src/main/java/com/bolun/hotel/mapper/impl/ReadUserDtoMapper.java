@@ -25,6 +25,17 @@ public class ReadUserDtoMapper implements Mapper<User, ReadUserDto> {
                 .build();
     }
 
+    public User mapToEntity(ReadUserDto readUserDto) {
+        return User.builder()
+                .id(readUserDto.getId())
+                .firstName(readUserDto.getFirstName())
+                .lastName(readUserDto.getLastName())
+                .email(readUserDto.getEmail())
+                .role(readUserDto.getRole())
+                .gender(readUserDto.getGender())
+                .build();
+    }
+
     public static ReadUserDtoMapper getInstance() {
         return INSTANCE;
     }

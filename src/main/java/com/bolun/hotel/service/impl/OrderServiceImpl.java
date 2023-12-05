@@ -10,9 +10,12 @@ import com.bolun.hotel.dto.CreateOrderDto;
 import com.bolun.hotel.dto.ReadOrderDto;
 import com.bolun.hotel.entity.Apartment;
 import com.bolun.hotel.entity.Order;
+import com.bolun.hotel.entity.User;
 import com.bolun.hotel.exception.InvalidDateException;
 import com.bolun.hotel.mapper.impl.CreateOrderDtoMapper;
+import com.bolun.hotel.mapper.impl.CreateUserDtoMapper;
 import com.bolun.hotel.mapper.impl.ReadOrderDtoMapper;
+import com.bolun.hotel.mapper.impl.ReadUserDtoMapper;
 import com.bolun.hotel.service.OrderService;
 import com.bolun.hotel.validator.OrderValidatorImpl;
 import com.bolun.hotel.validator.ValidationResult;
@@ -34,6 +37,7 @@ public class OrderServiceImpl implements OrderService {
     private final ApartmentDao apartmentDao = ApartmentDaoImpl.getInstance();
     private final CreateOrderDtoMapper createMapper = CreateOrderDtoMapper.getInstance();
     private final ReadOrderDtoMapper readMapper = ReadOrderDtoMapper.getInstance();
+    private final ReadUserDtoMapper userDtoMapper = ReadUserDtoMapper.getInstance();
 
     private final OrderValidatorImpl validator = OrderValidatorImpl.getInstance();
 
@@ -45,6 +49,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         Order order = createMapper.mapFrom(createOrderDto);
+        User user = userDtoMapper.mapToEntity(createOrderDto.readUserDto());
 
         //This code creates problems
         /*apartmentDao.findById(Long.parseLong(createOrderDto.apartmentId()))
@@ -63,8 +68,9 @@ public class OrderServiceImpl implements OrderService {
             apartmentDao.update(apartment);
         }
 
-        userDao.findById(createOrderDto.userId()).ifPresent(order::setUser);
+        order.setUser(user);
         order.setStatus(PENDING);
+
 
         orderDao.save(order);
         return createOrderDto;

@@ -1,6 +1,6 @@
 package com.bolun.hotel.dto;
 
-public record CreateOrderDto(Long userId,
+public record CreateOrderDto(ReadUserDto readUserDto,
                              String checkIn,
                              String checkOut,
                              String apartmentId) {

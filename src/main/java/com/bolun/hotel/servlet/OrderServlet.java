@@ -41,7 +41,7 @@ public class OrderServlet extends HttpServlet {
         ReadUserDto readUserDto = (ReadUserDto) req.getSession().getAttribute("user");
 
         CreateOrderDto createOrderDto = new CreateOrderDto(
-                readUserDto.getId(),
+                readUserDto,
                 req.getParameter("check-in"),
                 req.getParameter("check-out"),
                 req.getParameter("apartment")
