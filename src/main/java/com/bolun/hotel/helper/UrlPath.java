@@ -10,8 +10,10 @@ public class UrlPath {
     public static final String APARTMENT = "/apartment";
     public static final String USER_DETAIL = "/userDetail";
     public static final String ORDER = "/order";
-
+    public static final String USER_ORDERS = "/userOrders";
     public static final String LOGOUT = "/logout";
+
+    public static final String ADD_APARTMENT = "/addApartment";
     public static final String ALL = "/*";
 
 }

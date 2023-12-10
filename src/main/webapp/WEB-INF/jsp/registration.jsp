@@ -13,7 +13,7 @@
 
 <%@ include file="header.jsp" %>
 <h1>Registration</h1>
-<form action="${pageContext.request.contextPath}/registration" method="post" enctype="application/x-ww-urlencoded">
+<form action="${pageContext.request.contextPath}/registration" method="post" enctype="application/x-www-form-urlencoded">
     <label for="first_name">First Name:</label>
     <input type="text" name="first_name" id="first_name">
     <br>
@@ -26,12 +26,12 @@
     <label for="password">Password:</label>
     <input type="password" name="password" id="password">
     <br>
-    <label for="role">Role:</label>
+    <%--<label for="role">Role:</label>
     <select name="role" id="role">
         <c:forEach var="role" items="${requestScope.roles}">
             <option value="${role}" selected>${role}</option>
         </c:forEach>
-    </select>
+    </select>--%>
     <br>
     <label>Gender:
         <c:forEach var="gender" items="${requestScope.genders}">
@@ -40,10 +40,11 @@
     </label>
     <br>
     <button type="submit">Submit</button>
+    <a href="${pageContext.request.contextPath}/login">
+        <button type="button">Login</button>
+    </a>
 </form>
-<a href="${pageContext.request.contextPath}/login">
-    <button type="button">Login</button>
-</a>
+
 <c:if test="${not empty requestScope.errors}">
     <c:forEach var="error" items="${requestScope.errors}">
         <span class="color-message">${error.message}</span>

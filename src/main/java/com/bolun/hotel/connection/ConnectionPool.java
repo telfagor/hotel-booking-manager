@@ -20,7 +20,7 @@ public class ConnectionPool {
     private static final String DB_USERNAME = "db.username";
     private static final String DB_PASSWORD = "db.password";
     private static final String POOL_SIZE = "db.pool.size";
-    private static final int DEFAULT_POOL_SIZE = 10;
+    private static final int DEFAULT_POOL_SIZE = 15;
 
     @Getter
     private static BlockingQueue<Connection> pool;
@@ -30,7 +30,7 @@ public class ConnectionPool {
         initConnectionPool();
     }
 
-    private static void initConnectionPool() {
+    /*private static void initConnectionPool() {
         String poolSize = PropertiesUtil.getValue(POOL_SIZE);
         int size = poolSize == null ? DEFAULT_POOL_SIZE : Integer.parseInt(poolSize);
         pool = new ArrayBlockingQueue<>(size);
@@ -47,6 +47,39 @@ public class ConnectionPool {
             pool.add(proxyConnection);
             sourceConnections.add(connection);
         }
+    }*/
+
+    private static void initConnectionPool() {
+        String poolSize = PropertiesUtil.getValue(POOL_SIZE);
+        int size = poolSize == null ? DEFAULT_POOL_SIZE : Integer.parseInt(poolSize);
+        pool = new ArrayBlockingQueue<>(size);
+        sourceConnections = new ArrayList<>(size);
+
+        //try {
+            for (int i = 0; i < size; i++) {
+                Connection connection = open();
+                Connection proxyConnection = createProxyConnection(connection);
+                pool.add(proxyConnection);
+                sourceConnections.add(connection);
+            }
+       // } /*catch (SQLException ex) {
+            //throw new ConnectionException("Error initializing the connection pool", ex);
+        //}*/
+    }
+
+    private static Connection createProxyConnection(Connection connection) {
+        return (Connection) Proxy.newProxyInstance(
+                ConnectionManager.class.getClassLoader(),
+                new Class[]{Connection.class},
+                (proxy, method, args) -> {
+                    if (method.getName().equals("close")) {
+                        pool.add(connection);
+                        return null; // Do not actually close the connection
+                    } else {
+                        return method.invoke(connection, args);
+                    }
+                }
+        );
     }
 
     private static Connection open() {

@@ -49,7 +49,7 @@ public class OrderServlet extends HttpServlet {
 
         try {
             orderService.create(createOrderDto);
-            resp.sendRedirect(LOGIN);
+            resp.sendRedirect("/userOrders");
         } catch (InvalidDateException ex) {
             req.setAttribute("errors", ex.getErrors());
             doGet(req, resp);

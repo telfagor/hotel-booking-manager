@@ -13,7 +13,6 @@ import com.bolun.hotel.entity.Order;
 import com.bolun.hotel.entity.User;
 import com.bolun.hotel.exception.InvalidDateException;
 import com.bolun.hotel.mapper.impl.CreateOrderDtoMapper;
-import com.bolun.hotel.mapper.impl.CreateUserDtoMapper;
 import com.bolun.hotel.mapper.impl.ReadOrderDtoMapper;
 import com.bolun.hotel.mapper.impl.ReadUserDtoMapper;
 import com.bolun.hotel.service.OrderService;
@@ -24,7 +23,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 import java.util.Optional;
 
-import static com.bolun.hotel.entity.enums.ApartmentStatus.*;
+import static com.bolun.hotel.entity.enums.ApartmentStatus.OCCUPIED;
 import static com.bolun.hotel.entity.enums.OrderStatus.PENDING;
 import static lombok.AccessLevel.PRIVATE;
 
@@ -36,7 +35,7 @@ public class OrderServiceImpl implements OrderService {
     private final UserDao userDao = UserDaoImpl.getInstance();
     private final ApartmentDao apartmentDao = ApartmentDaoImpl.getInstance();
     private final CreateOrderDtoMapper createMapper = CreateOrderDtoMapper.getInstance();
-    private final ReadOrderDtoMapper readMapper = ReadOrderDtoMapper.getInstance();
+    private final ReadOrderDtoMapper readOrderDtoMapper = ReadOrderDtoMapper.getInstance();
     private final ReadUserDtoMapper userDtoMapper = ReadUserDtoMapper.getInstance();
 
     private final OrderValidatorImpl validator = OrderValidatorImpl.getInstance();
@@ -71,15 +70,21 @@ public class OrderServiceImpl implements OrderService {
         order.setUser(user);
         order.setStatus(PENDING);
 
-
         orderDao.save(order);
         return createOrderDto;
     }
 
     @Override
+    public List<ReadOrderDto> findUserOrdersById(Long id) {
+        return orderDao.findUserOrdersById(id).stream()
+                .map(readOrderDtoMapper::mapFrom)
+                .toList();
+    }
+
+    @Override
     public List<ReadOrderDto> findAll() {
         return orderDao.findAll().stream()
-                .map(readMapper::mapFrom)
+                .map(readOrderDtoMapper::mapFrom)
                 .toList();
     }
 

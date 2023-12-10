@@ -21,7 +21,6 @@ import static lombok.AccessLevel.PRIVATE;
 public class ApartmentDaoImpl implements ApartmentDao {
 
     private static final ApartmentDao INSTANCE = new ApartmentDaoImpl();
-
     private static final String ID = "id";
     private static final String NUMBER_OF_ROOMS = "number_of_rooms";
     private static final String NUMBER_OF_SEATS = "number_of_seats";

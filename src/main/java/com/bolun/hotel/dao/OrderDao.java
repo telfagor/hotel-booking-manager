@@ -8,5 +8,7 @@ public interface OrderDao extends BaseDao<Long, Order> {
 
     List<Order> findByApartmentId(Long id);
 
+    List<Order> findUserOrdersById(Long id);
+
     List<Order> findAll();
 }

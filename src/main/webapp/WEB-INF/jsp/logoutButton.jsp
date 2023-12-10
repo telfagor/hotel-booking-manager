@@ -5,11 +5,11 @@
     <title>Title</title>
 </head>
 <body>
-<h1>Welcome to our hotel!</h1>
-<%--<c:if test="${not empty sessionScope.user}">
+<c:if test="${not empty sessionScope.user}">
+    <br>
     <form action="${pageContext.request.contextPath}/logout" method="post" enctype="application/x-www-form-urlencoded">
         <button type="submit">Logout</button>
     </form>
-</c:if>--%>
+</c:if>
 </body>
 </html>

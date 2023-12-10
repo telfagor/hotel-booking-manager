@@ -11,7 +11,8 @@
     </style>
 </head>
 <body>
-    <%@ include file="header.jsp"%>
+    <%@ include file="header.jsp" %>
+    <%@ include file="yourOrdersButton.jsp" %>
     <h2>Create order!</h2>
 
     <form action="${pageContext.request.contextPath}/order" method="post" enctype="application/x-www-form-urlencoded">

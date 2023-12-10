@@ -1,4 +1,4 @@
-package com.bolun.hotel.validator.filter;
+package com.bolun.hotel.filter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
